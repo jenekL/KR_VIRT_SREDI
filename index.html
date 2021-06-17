@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang='ru'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <title>Добро пожаловать!</title>
+    <style type="text/css">
+        .tabs {
+            width: 100%;
+            padding: 0px;
+            margin: 0 auto;
+        }
+
+        .tabs > input {
+            display: none;
+        }
+
+        .tabs > div {
+            display: none;
+            padding: 12px;
+            border: 1px solid #C0C0C0;
+            background: #FFFFFF;
+        }
+
+        .tabs > label {
+            display: inline-block;
+            padding: 7px;
+            margin: 0 -5px -1px 0;
+            text-align: center;
+            color: #666666;
+            border: 1px solid #C0C0C0;
+            background: #E0E0E0;
+            cursor: pointer;
+        }
+
+        .tabs > input:checked + label {
+            color: #000000;
+            border: 1px solid #C0C0C0;
+            border-bottom: 1px solid #FFFFFF;
+            background: #FFFFFF;
+        }
+
+        #tab_1:checked ~ #txt_1,
+        #tab_2:checked ~ #txt_2,
+        #tab_3:checked ~ #txt_3,
+        #tab_4:checked ~ #txt_4 {
+            display: block;
+        }
+
+        textarea {
+            background: #fce9c0; /* Цвет фона */
+            border: 2px solid #a9c358; /* Параметры рамки */
+            padding: 10px; /* Поля */
+            width: 100%; /* Ширина */
+            height: 600px; /* Высота */
+            box-sizing: border-box; /* Алгоритм расчёта ширины */
+            font-size: 14px; /* Размер шрифта */
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="tabs">
+    <input type="radio" name="inset" value="" id="tab_1" checked>
+    <label for="tab_1">Задание</label>
+
+    <input type="radio" name="inset" value="" id="tab_2">
+    <label for="tab_2">Исходный код</label>
+
+    <input type="radio" name="inset" value="" id="tab_3">
+    <label for="tab_3">Ваш код</label>
+    <div id="txt_1">
+        <p>Написать функцию correction</p>
+    </div>
+    <div id="txt_2">
+        <form method="post">
+            <p><b>Исходный код: </b></p>
+            <textarea id="js-textarea-2"></textarea>
+            <input type="file" id="js-file" accept=".txt,.css,.html">
+            <script>
+                document.getElementById('js-file').addEventListener('change', readFileAsString)
+
+                function readFileAsString() {
+                    var files = this.files;
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('js-textarea-2').value = e.target.result;
+                    };
+                    reader.readAsText(files[0], "UTF-8");
+                }
+
+            </script>
+        </form>
+    </div>
+
+    <div id="txt_3">
+        <form id="myform" name="myform" method="post" action="compilecode">
+            <h3>Code</h3>
+            <label for="code"></label><textarea rows="13" cols="100" id="code" name="code"></textarea>
+            <br/>
+            <input type="submit" value="submit" name="submit"/>
+        </form>
+
+        <button onclick="download('Main.java', 'text/plain')">Save file</button>
+        <script>
+            function download(filename, type) {
+                var dataToSave = document.getElementById('code').value;
+                var file = new Blob([dataToSave], {type: type});
+                if (window.navigator.msSaveOrOpenBlob) // IE10+
+                    window.navigator.msSaveOrOpenBlob(file, filename);
+                else { // Others
+                    var a = document.createElement("a"),
+                        url = URL.createObjectURL(file);
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    setTimeout(function () {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+                    }, 0);
+                }
+            }
+        </script>
+    </div>
+</div>
+</body>
+
+</html>

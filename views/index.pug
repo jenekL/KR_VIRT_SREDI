@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    if (typeof(error) == 'undefined')
+        h1 Code compiled successfully
+        p Junit tests: #{tests}
+        p Java compilation result: #{java}
+    else
+        h1 Error:
+        pre #{error}
